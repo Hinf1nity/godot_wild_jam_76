@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 
-const SPEED = 50.0
+const SPEED = 3500.0
 var current_dir = "None"
 
 
@@ -9,30 +9,37 @@ func _physics_process(delta: float) -> void:
 	player_movement(delta)
 
 func player_movement(delta:float):
+	var SpeedR = SPEED * delta
+	velocity = Vector2.ZERO
+
 	if Input.is_action_pressed("ui_right"):
+		velocity.x += SpeedR
+	if Input.is_action_pressed("ui_left"):
+		velocity.x -= SpeedR
+	if Input.is_action_pressed("ui_down"):
+		velocity.y += SpeedR
+	if Input.is_action_pressed("ui_up"):
+		velocity.y -= SpeedR
+
+	# Normaliza la velocidad para mantener una velocidad constante al moverse en diagonal
+	if velocity.length() > 0:
+		velocity = velocity.normalized() * SpeedR
+
+	# Cambia la dirección actual según el vector de velocidad
+	if velocity.x > 0:
 		current_dir = "right"
-		play_anim(1)
-		velocity.x = SPEED
-		velocity.y = 0
-	elif Input.is_action_pressed("ui_left"):
+	elif velocity.x < 0:
 		current_dir = "left"
-		play_anim(1)
-		velocity.x = -SPEED
-		velocity.y = 0
-	elif Input.is_action_pressed("ui_down"):
-		current_dir= "down"
-		play_anim(1)
-		velocity.x = 0
-		velocity.y = SPEED
-	elif Input.is_action_pressed("ui_up"):
+	elif velocity.y > 0:
+		current_dir = "down"
+	elif velocity.y < 0:
 		current_dir = "up"
+
+	# Animación
+	if velocity != Vector2.ZERO:
 		play_anim(1)
-		velocity.x = 0
-		velocity.y = -SPEED
 	else:
 		play_anim(0)
-		velocity.x = 0
-		velocity.y = 0
 	
 	move_and_slide()
 
