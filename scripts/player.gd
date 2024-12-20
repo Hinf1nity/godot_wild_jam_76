@@ -56,6 +56,8 @@ func player_movement(delta:float) -> void:
 		play_anim(1)
 	else:
 		play_anim(0)
+		velocity.x = 0
+		velocity.y = 0
 	
 	move_and_collide(velocity*delta)
 
