@@ -1,7 +1,6 @@
-[gd_scene load_steps=29 format=3 uid="uid://crrwp20d0buph"]
+[gd_scene load_steps=28 format=3 uid="uid://crrwp20d0buph"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_mnuxo"]
-[ext_resource type="Texture2D" uid="uid://detsnqhgivtux" path="res://assets/sprites/Prototype_Character_Blue.png" id="2_3sxwb"]
 [ext_resource type="Texture2D" uid="uid://dqtjen2ljtokg" path="res://assets/sprites/loki cultist.png" id="2_hfuga"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r68m7"]
@@ -29,23 +28,18 @@ atlas = ExtResource("2_hfuga")
 region = Rect2(48, 16, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3ysn2"]
-atlas = ExtResource("2_3sxwb")
 region = Rect2(0, 192, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_73ogx"]
-atlas = ExtResource("2_3sxwb")
 region = Rect2(32, 192, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3ht0e"]
-atlas = ExtResource("2_3sxwb")
 region = Rect2(0, 288, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0u6rp"]
-atlas = ExtResource("2_3sxwb")
 region = Rect2(32, 288, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8tm8o"]
-atlas = ExtResource("2_3sxwb")
 region = Rect2(64, 288, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lkl1k"]
