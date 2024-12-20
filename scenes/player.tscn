@@ -1,7 +1,8 @@
-[gd_scene load_steps=28 format=3 uid="uid://crrwp20d0buph"]
+[gd_scene load_steps=25 format=3 uid="uid://crrwp20d0buph"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_mnuxo"]
 [ext_resource type="Texture2D" uid="uid://dqtjen2ljtokg" path="res://assets/sprites/loki cultist.png" id="2_hfuga"]
+[ext_resource type="PackedScene" uid="uid://d23xh8pv37ij1" path="res://scenes/interface.tscn" id="3_ha3ek"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r68m7"]
 atlas = ExtResource("2_hfuga")
@@ -26,21 +27,6 @@ region = Rect2(32, 16, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_cj2rh"]
 atlas = ExtResource("2_hfuga")
 region = Rect2(48, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3ysn2"]
-region = Rect2(0, 192, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_73ogx"]
-region = Rect2(32, 192, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3ht0e"]
-region = Rect2(0, 288, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0u6rp"]
-region = Rect2(32, 288, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8tm8o"]
-region = Rect2(64, 288, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lkl1k"]
 atlas = ExtResource("2_hfuga")
@@ -127,26 +113,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3ysn2")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_73ogx")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3ht0e")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0u6rp")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8tm8o")
-}],
-"loop": true,
-"name": &"death",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_lkl1k")
 }, {
 "duration": 1.0,
@@ -213,18 +179,56 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ds6jp"]
-radius = 4.0
+radius = 5.09902
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2cq68"]
+radius = 9.05539
 
 [node name="Player" type="CharacterBody2D"]
+y_sort_enabled = true
+collision_layer = 3
 script = ExtResource("1_mnuxo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 1)
 sprite_frames = SubResource("SpriteFrames_t6hui")
-animation = &"side_attack"
+animation = &"front_attack"
 autoplay = "front_idle"
-frame = 1
-frame_progress = 0.699472
+offset = Vector2(0, -6)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 3)
+position = Vector2(0, -1)
 shape = SubResource("CircleShape2D_ds6jp")
+
+[node name="player_hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player_hitbox"]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_2cq68")
+
+[node name="attack_cooldown" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="deal_attack_timer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ray_down" type="RayCast2D" parent="."]
+target_position = Vector2(0, 7)
+
+[node name="ray_up" type="RayCast2D" parent="."]
+target_position = Vector2(0, -17)
+
+[node name="ray_left" type="RayCast2D" parent="."]
+position = Vector2(0, -2)
+target_position = Vector2(-10, 0)
+
+[node name="ray_right" type="RayCast2D" parent="."]
+position = Vector2(0, -2)
+target_position = Vector2(10, 0)
+
+[node name="Interface" parent="." instance=ExtResource("3_ha3ek")]
+
+[connection signal="body_entered" from="player_hitbox" to="." method="_on_player_hitbox_body_entered"]
+[connection signal="body_exited" from="player_hitbox" to="." method="_on_player_hitbox_body_exited"]
+[connection signal="timeout" from="attack_cooldown" to="." method="_on_attack_cooldown_timeout"]
+[connection signal="timeout" from="deal_attack_timer" to="." method="_on_deal_attack_timer_timeout"]

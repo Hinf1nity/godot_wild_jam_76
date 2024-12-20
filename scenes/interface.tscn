@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://d23xh8pv37ij1"]
+
+[ext_resource type="PackedScene" uid="uid://caqttceodr8gh" path="res://scenes/health_bar.tscn" id="1_tynsj"]
+[ext_resource type="PackedScene" uid="uid://bsu0t23r65kci" path="res://scenes/exp_bar.tscn" id="2_6nsc3"]
+
+[node name="Interface" type="CanvasLayer"]
+
+[node name="HealthBar" parent="." instance=ExtResource("1_tynsj")]
+offset_left = 11.0
+offset_top = 35.0
+offset_right = 251.0
+offset_bottom = 39.0
+
+[node name="Label" type="Label" parent="."]
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 52.0
+offset_bottom = 33.0
+text = "JUGADOR"
+
+[node name="ExpBar" parent="." instance=ExtResource("2_6nsc3")]
+offset_left = 11.0
+offset_top = 41.0
+offset_right = 251.0
+offset_bottom = 45.0
