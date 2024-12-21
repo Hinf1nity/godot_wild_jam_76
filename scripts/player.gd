@@ -24,94 +24,82 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	player_movement(delta)
 	attack()
-	
 	if health <= 0:
 		player_alive = false
 		health = 0
 		print("Player has been kill")
 		self.queue_free()
 
-func player_movement(delta:float) -> void:
+func player_movement(delta: float):
+	velocity = Vector2.ZERO
+
 	if Input.is_action_pressed("move_right"):
+		velocity.x += SPEED
 		current_dir = "right"
 		ray_range = $ray_right
-		play_anim(1)
-		velocity.x = SPEED
-		velocity.y = 0
-	elif Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left"):
+		velocity.x -= SPEED
 		current_dir = "left"
 		ray_range = $ray_left
-		play_anim(1)
-		velocity.x = -SPEED
-		velocity.y = 0
-	elif Input.is_action_pressed("move_down"):
-		current_dir= "down"
+	if Input.is_action_pressed("move_down"):
+		velocity.y += SPEED
+		current_dir = "down"
 		ray_range = $ray_down
-		play_anim(1)
-		velocity.x = 0
-		velocity.y = SPEED
-	elif Input.is_action_pressed("move_up"):
+	if Input.is_action_pressed("move_up"):
+		velocity.y -= SPEED
 		current_dir = "up"
 		ray_range = $ray_up
+
+	if velocity.length() > 0:
+		velocity = velocity.normalized() * SPEED
 		play_anim(1)
 	else:
 		play_anim(0)
-		velocity.x = 0
-		velocity.y = 0
-	
-	move_and_collide(velocity*delta)
 
-func play_anim(movement:int) -> void:
+	move_and_collide(velocity * delta)
+
+func play_anim(movement: int) -> void:
 	var dir = current_dir
 	var anim = $AnimatedSprite2D
 	anim.flip_h = true
-	
+
 	if dir == "right":
 		anim.flip_h = false
 		if movement == 1:
 			anim.play("side_walk")
 		elif movement == 0:
-			if attack_ip == false:
+			if not attack_ip:
 				anim.play("side_idle")
-	
 	elif dir == "left":
 		if movement == 1:
 			anim.play("side_walk")
 		elif movement == 0:
-			if attack_ip == false:
+			if not attack_ip:
 				anim.play("side_idle")
-	
 	elif dir == "down":
 		if movement == 1:
 			anim.play("front_walk")
 		elif movement == 0:
-			if attack_ip == false:
+			if not attack_ip:
 				anim.play("front_idle")
-	
 	elif dir == "up":
 		if movement == 1:
 			anim.play("back_walk")
 		elif movement == 0:
-			if attack_ip == false:
+			if not attack_ip:
 				anim.play("back_idle")
 
 func player() -> void:
 	pass
 
 func _on_player_hitbox_body_entered(body: Node2D) -> void:
-	#if body.is_in_group("Enemies"):
-		#enemies_in_range.append(body)
 	pass
-
 
 func _on_player_hitbox_body_exited(body: Node2D) -> void:
-	#if body.is_in_group("Enemies"):
-		#enemies_in_range.erase(body)
 	pass
 
-func attack() -> void :
+func attack() -> void:
 	var dir = current_dir
-	
 	if Input.is_action_just_pressed("attack"):
 		global.player_current_attack = true
 		attack_ip = true
@@ -148,7 +136,7 @@ func set_exp(amount: int) -> void:
 
 func die() -> void:
 	print("¡Has muerto!")
-	queue_free()  # Elimina al jugador del juego o implementa un sistema de reinicio
+	queue_free()
 
 func _on_deal_attack_timer_timeout() -> void:
 	$deal_attack_timer.stop()

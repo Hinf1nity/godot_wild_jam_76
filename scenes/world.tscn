@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://dehg3fr0by34x"]
+[gd_scene load_steps=15 format=4 uid="uid://dehg3fr0by34x"]
 
 [ext_resource type="Texture2D" uid="uid://h1ucfgbpt4w" path="res://assets/sprites/tilesets/plains.png" id="1_8llp1"]
 [ext_resource type="Texture2D" uid="uid://ddeeytcuei5ix" path="res://assets/sprites/tilesets/grass.png" id="2_fnjk6"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bxrf7xfknagxg" path="res://assets/tilesets/tilesHelHeim.png" id="4_m0kr2"]
 [ext_resource type="PackedScene" uid="uid://crrwp20d0buph" path="res://scenes/player.tscn" id="5_8hf6x"]
 [ext_resource type="PackedScene" uid="uid://dyrq71y026xpv" path="res://scenes/enemy_1.tscn" id="6_3c38e"]
+[ext_resource type="Script" path="res://scripts/camera_2d.gd" id="7_co4sy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_olod8"]
 texture = ExtResource("1_8llp1")
@@ -169,3 +170,12 @@ position = Vector2(15, 83)
 
 [node name="enemy_1" parent="." instance=ExtResource("6_3c38e")]
 position = Vector2(156, 123)
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player_follow")]
+zoom = Vector2(4, 4.909)
+limit_left = 0
+limit_top = 0
+limit_right = 528
+limit_bottom = 240
+script = ExtResource("7_co4sy")
+player_follow = NodePath("../Player")
